@@ -10,30 +10,33 @@ import AlbumCard from '../components/AlbumCard';
 
 
 function ArtistDetail() {
-  const {id} = useParams();
+  const {artistid} = useParams();
   const [albums, setAlbums] = useState([]);
   const [artist, setArtist] = useState([]);
   const [loading, setLoading] = useState(true); // Para controlar el cargando
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchAlbums = async () => {
-      try {
-        const artistResponse = await getArtistInfo(id); // Obtiene nombre y foto
-        setArtist(artistResponse.data);
-
-        const albumsResponse = await searchArtistAlbums(id);
-        setAlbums(albumsResponse.data.items);
-      } catch (error) {
-        console.error('Error cargando los álbumes:', error);
-        setError('No se pudieron cargar los álbumes.');
-      } finally {
-        setLoading(false); // Siempre termina cargando
-      }
-    };
-
-    fetchAlbums();
-  }, [id]);
+    if (artistid) {
+      const fetchAlbums = async () => {
+        try {
+          const artistResponse = await getArtistInfo(artistid); // Obtiene nombre y foto
+          setArtist(artistResponse.data);
+  
+          const albumsResponse = await searchArtistAlbums(artistid);
+          setAlbums(albumsResponse.data.items);
+        } catch (error) {
+          console.error('Error cargando los álbumes:', error);
+          setError('No se pudieron cargar los álbumes.');
+        } finally {
+          setLoading(false); // Siempre termina cargando
+        }
+      };
+  
+      fetchAlbums(); // <-- Muy importante llamar a la función
+    }
+  }, [artistid]);
+  
 
   const {favorites, addFavorite, removeFavorite} = useContext(FavoritesContext);
   
@@ -52,7 +55,7 @@ function ArtistDetail() {
 
   return (
     <div>
-        <Link to="/">Volver</Link>
+        <Link to="/home">Volver</Link>
         <img src={artist.images[0]?.url} alt={artist.name} width="100" />
         <h2>{artist.name}</h2>
         <button onClick={toggleFavorite}>

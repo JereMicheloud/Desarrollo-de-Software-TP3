@@ -1,15 +1,48 @@
 import axios from 'axios';
 
-const API_URL = 'https://api.spotify.com/v1'; 
-const TOKEN = 'BQBqX8nEbQFB7qA3eakpzXlXmLHs1LgFiCxD-th-j6OjqDOysWxHNy7WMXHy3I9SUlGyi11nqdUhHyDpX_0iRUovk4PxchGHrQ9tfJ9EvVEQoogNgFgsJHIfbwcqbK72kBlFIFbArBU';
+const API_URL = 'https://api.spotify.com/v1';
+const TOKEN_URL = 'https://accounts.spotify.com/api/token';
 
+// Función para obtener el access token
+const getAccessToken = async () => {
+  const clientId = localStorage.getItem('CLIENT_ID');
+  const clientSecret = localStorage.getItem('CLIENT_SECRET');
+
+  if (!clientId || !clientSecret) {
+    throw new Error('Faltan CLIENT_ID o CLIENT_SECRET en el localStorage');
+  }
+
+  const credentials = btoa(`${clientId}:${clientSecret}`); // Codifica a base64
+
+  const response = await axios.post(
+    TOKEN_URL,
+    new URLSearchParams({
+      grant_type: 'client_credentials'
+    }),
+    {
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }
+  );
+
+  return response.data.access_token;
+};
+
+// Creamos una instancia de axios (sin el token por ahora)
 const api = axios.create({
   baseURL: API_URL,
-  headers: {
-    Authorization: `Bearer ${TOKEN}`,
-  },
 });
 
+// Interceptamos las peticiones para ponerle el token automáticamente
+api.interceptors.request.use(async (config) => {
+  const token = await getAccessToken();
+  config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+// Funciones para usar la API
 export const searchArtists = (query) => {
   return api.get(`/search`, {
     params: {
@@ -20,9 +53,14 @@ export const searchArtists = (query) => {
 };
 
 export const searchArtistAlbums = (artistId) => {
-    return api.get(`/artists/${artistId}/albums`);
-  };
-  
+  return api.get(`/artists/${artistId}/albums`);
+};
+
 export const getArtistInfo = (artistId) => {
   return api.get(`/artists/${artistId}`);
 };
+
+export const getAlbumDetails = (albumId) => {
+    return api.get(`/albums/${albumId}`);
+};
+  

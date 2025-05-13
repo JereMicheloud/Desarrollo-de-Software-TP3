@@ -22,6 +22,7 @@ function Home() {
     <div style={{display: 'flex'}}>
       
       {/* Columna de artistas favoritos */}
+      <Link to="/artist/album/favoritos">Ver Canciones Favoritas</Link>
       <div style={{ width: '25%', padding: '10px', borderRight: '1px solid gray' }}>
         <h2>Artistas Favoritos:</h2>
         {favorites.length > 0 ? (
