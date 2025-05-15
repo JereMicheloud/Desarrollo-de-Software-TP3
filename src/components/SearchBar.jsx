@@ -7,7 +7,7 @@ function SearchBar({onSearch}) {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{display: 'flex', gap: '1em', justifyContent: 'center', margin: '1em 0'}}>
+    <form onSubmit={handleSubmit} className="home-search-form">
       <input type="text" name="search" placeholder="Buscar artista..." />
       <button type="submit">Buscar</button>
     </form>
