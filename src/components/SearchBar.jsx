@@ -3,6 +3,7 @@ function SearchBar({onSearch}) {
     e.preventDefault();
     const value = e.target.elements.search.value;
     onSearch(value);
+    console.log(value);
   };
 
   return (

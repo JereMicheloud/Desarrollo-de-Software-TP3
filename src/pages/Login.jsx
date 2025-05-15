@@ -6,6 +6,8 @@ function Login() {
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  console.log(pass)
+  console.log(user)
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,8 +37,8 @@ function Login() {
 
       if (data.access_token) {
         localStorage.setItem("spotify_token", data.access_token);
-        localStorage.setItem("user", user);
-        localStorage.setItem("pass", pass);
+        localStorage.setItem("CLIENT_ID", user);
+        localStorage.setItem("CLIENT_SECRET", pass);
         navigate("/home");
       } else {
         setError("No se pudo obtener el token");
