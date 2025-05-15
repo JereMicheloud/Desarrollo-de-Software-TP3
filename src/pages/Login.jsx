@@ -2,16 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [user, setUser] = useState("");
-  const [pass, setPass] = useState("");
+  const [clientId, setClientId] = useState("");
+  const [clientSecret, setClientSecret] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    const clientId = "a8a4eed0edad4567a0b9b50e1ba69e55";
-    const clientSecret = "ef5724b47b9a4e7ebbf0ca8b043be1b2";
 
     const tokenUrl = "https://accounts.spotify.com/api/token";
     const credentials = btoa(`${clientId}:${clientSecret}`);
@@ -29,10 +26,14 @@ function Login() {
       const data = await response.json();
 
       if (data.access_token) {
+        // ✅ Guardamos todo en localStorage
         localStorage.setItem("spotify_token", data.access_token);
+        localStorage.setItem("spotify_client_id", clientId);
+        localStorage.setItem("spotify_client_secret", clientSecret);
+
         navigate("/home");
       } else {
-        setError("No se pudo obtener el token");
+        setError("No se pudo obtener el token. Verifica las credenciales.");
       }
     } catch (err) {
       setError("Error de conexión con la API");
@@ -125,26 +126,29 @@ function Login() {
         `}
       </style>
       <form className="login-card" onSubmit={handleLogin}>
-        <div className="login-title">Iniciar Sesión</div>
-        <label className="login-label" htmlFor="user">Usuario</label>
+        <div className="login-title">Spotify Login</div>
+
+        <label className="login-label" htmlFor="clientId">Client ID</label>
         <input
           className="login-input"
-          id="user"
+          id="clientId"
           type="text"
-          value={user}
-          onChange={e => setUser(e.target.value)}
-          autoComplete="username"
+          value={clientId}
+          onChange={(e) => setClientId(e.target.value)}
+          autoComplete="off"
         />
-        <label className="login-label" htmlFor="pass">Contraseña</label>
+
+        <label className="login-label" htmlFor="clientSecret">Client Secret</label>
         <input
           className="login-input"
-          id="pass"
+          id="clientSecret"
           type="password"
-          value={pass}
-          onChange={e => setPass(e.target.value)}
-          autoComplete="current-password"
+          value={clientSecret}
+          onChange={(e) => setClientSecret(e.target.value)}
+          autoComplete="off"
         />
-        <button className="login-btn" type="submit">Entrar</button>
+
+        <button className="login-btn" type="submit">Obtener Token</button>
         {error && <div className="login-error">{error}</div>}
       </form>
     </div>
