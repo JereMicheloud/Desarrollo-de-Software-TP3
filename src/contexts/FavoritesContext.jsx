@@ -11,8 +11,12 @@ export function FavoritesProvider({children}) {
     }
   };
 
+  const removeFavorite = (artistId) => {
+    setFavorites((prevFavorites) => prevFavorites.filter(fav => fav.id !== artistId));
+  };
+
   return (
-    <FavoritesContext.Provider value={{favorites, addFavorite}}>
+    <FavoritesContext.Provider value={{favorites, addFavorite, removeFavorite}}>
       {children}
     </FavoritesContext.Provider>
   );

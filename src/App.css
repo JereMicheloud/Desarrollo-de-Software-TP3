@@ -1,3 +1,61 @@
+:root {
+  --spotify-green: #1db954;
+  --spotify-green-light: #1ed760;
+  --spotify-black: #191414;
+  --spotify-dark-gray: #282828;
+  --spotify-gray: #b3b3b3;
+  --spotify-white: #fff;
+}
+
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--spotify-black);
+  color: var(--spotify-white);
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+a {
+  color: var(--spotify-green);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--spotify-green-light);
+}
+
+button {
+  border-radius: 24px;
+  border: none;
+  padding: 0.6em 1.5em;
+  font-size: 1em;
+  font-weight: 600;
+  background-color: var(--spotify-green);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+button:hover {
+  background-color: var(--spotify-green-light);
+  color: var(--spotify-black);
+}
+
+input[type="text"], input[type="password"] {
+  border-radius: 20px;
+  border: 1px solid var(--spotify-gray);
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  background: #222326;
+  color: #fff;
+  margin: 0.5em 0;
+  transition: border 0.2s;
+}
+input[type="text"]:focus, input[type="password"]:focus {
+  border: 1.5px solid var(--spotify-green);
+  outline: none;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -34,9 +92,61 @@
 }
 
 .card {
-  padding: 2em;
+  background: var(--spotify-dark-gray);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+img {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  max-width: 100%;
+  height: auto;
+}
+
+h1, h2, h3, h4 {
+  color: var(--spotify-white);
+  font-weight: 700;
+  margin-bottom: 0.5em;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #222326;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--spotify-dark-gray);
+  border-radius: 8px;
 }
 
 .read-the-docs {
   color: #888;
+}
+
+.app-bg {
+  min-height: 100vh;
+  min-width: 100vw;
+  background: linear-gradient(135deg, #191414 60%, #232323 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-center {
+  width: 100%;
+  max-width: 900px;
+  min-height: 90vh;
+  margin: 0 auto;
+  background: rgba(25,25,25,0.97);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px 0 rgba(30,185,84,0.10), 0 1.5px 8px 0 rgba(0,0,0,0.18);
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
