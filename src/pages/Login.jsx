@@ -2,19 +2,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [clientId, setClientId] = useState("");
-  const [clientSecret, setClientSecret] = useState("");
+  const [user, setUser] = useState("");
+  const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
 
-    if (!clientId || !clientSecret) {
-      setError("Debes ingresar Client ID y Client Secret.");
-      return;
-    }
+    const clientId = "a8a4eed0edad4567a0b9b50e1ba69e55";
+    const clientSecret = "ef5724b47b9a4e7ebbf0ca8b043be1b2";
 
     const tokenUrl = "https://accounts.spotify.com/api/token";
     const credentials = btoa(`${clientId}:${clientSecret}`);
@@ -32,18 +29,13 @@ function Login() {
       const data = await response.json();
 
       if (data.access_token) {
-        // ✅ Guardar datos en localStorage con los nombres correctos
         localStorage.setItem("spotify_token", data.access_token);
-        localStorage.setItem("CLIENT_ID", clientId);
-        localStorage.setItem("CLIENT_SECRET", clientSecret);
-
         navigate("/home");
       } else {
-        setError("Credenciales incorrectas o fallo al obtener el token.");
+        setError("No se pudo obtener el token");
       }
     } catch (err) {
-      console.error("Error al conectarse con la API:", err);
-      setError("Error de conexión con la API de Spotify.");
+      setError("Error de conexión con la API");
     }
   };
 
@@ -125,7 +117,6 @@ function Login() {
             margin-top: 1em;
             font-weight: 600;
             letter-spacing: 0.01em;
-            text-align: center;
           }
           @keyframes fadein {
             from { opacity: 0; transform: translateY(30px);}
@@ -133,32 +124,27 @@ function Login() {
           }
         `}
       </style>
-
       <form className="login-card" onSubmit={handleLogin}>
-        <div className="login-title">Spotify Login</div>
-
-        <label className="login-label" htmlFor="clientId">Client ID</label>
+        <div className="login-title">Iniciar Sesión</div>
+        <label className="login-label" htmlFor="user">Usuario</label>
         <input
           className="login-input"
-          id="clientId"
+          id="user"
           type="text"
-          value={clientId}
-          onChange={(e) => setClientId(e.target.value)}
-          autoComplete="off"
+          value={user}
+          onChange={e => setUser(e.target.value)}
+          autoComplete="username"
         />
-
-        <label className="login-label" htmlFor="clientSecret">Client Secret</label>
+        <label className="login-label" htmlFor="pass">Contraseña</label>
         <input
           className="login-input"
-          id="clientSecret"
+          id="pass"
           type="password"
-          value={clientSecret}
-          onChange={(e) => setClientSecret(e.target.value)}
-          autoComplete="off"
+          value={pass}
+          onChange={e => setPass(e.target.value)}
+          autoComplete="current-password"
         />
-
-        <button className="login-btn" type="submit">Iniciar sesión</button>
-
+        <button className="login-btn" type="submit">Entrar</button>
         {error && <div className="login-error">{error}</div>}
       </form>
     </div>
