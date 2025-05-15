@@ -15,6 +15,7 @@ function Login() {
 
     const tokenUrl = "https://accounts.spotify.com/api/token";
     const credentials = btoa(`${clientId}:${clientSecret}`);
+    const bodyParams = "grant_type=client_credentials";
 
     try {
       const response = await fetch(tokenUrl, {
@@ -23,13 +24,19 @@ function Login() {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: `Basic ${credentials}`,
         },
-        body: "grant_type=client_credentials",
+        body: bodyParams,
       });
+
+      if (!response.ok) {
+        throw new Error("No se pudo obtener el token");
+      }
 
       const data = await response.json();
 
       if (data.access_token) {
         localStorage.setItem("spotify_token", data.access_token);
+        localStorage.setItem("user", user);
+        localStorage.setItem("pass", pass);
         navigate("/home");
       } else {
         setError("No se pudo obtener el token");
