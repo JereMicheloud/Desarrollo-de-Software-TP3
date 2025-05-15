@@ -6,17 +6,20 @@ function Login() {
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  console.log(pass)
-  console.log(user)
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const clientId = "a8a4eed0edad4567a0b9b50e1ba69e55";
-    const clientSecret = "ef5724b47b9a4e7ebbf0ca8b043be1b2";
+    const correctClientId = "a8a4eed0edad4567a0b9b50e1ba69e55";
+    const correctClientSecret = "ef5724b47b9a4e7ebbf0ca8b043be1b2";
+
+    if (user !== correctClientId || pass !== correctClientSecret) {
+      setError("Credenciales incorrectas");
+      return;
+    }
 
     const tokenUrl = "https://accounts.spotify.com/api/token";
-    const credentials = btoa(`${clientId}:${clientSecret}`);
+    const credentials = btoa(`${user}:${pass}`);
     const bodyParams = "grant_type=client_credentials";
 
     try {
@@ -30,7 +33,8 @@ function Login() {
       });
 
       if (!response.ok) {
-        throw new Error("No se pudo obtener el token");
+        setError("Error al conectar con la API de Spotify");
+        return;
       }
 
       const data = await response.json();
@@ -41,7 +45,7 @@ function Login() {
         localStorage.setItem("CLIENT_SECRET", pass);
         navigate("/home");
       } else {
-        setError("No se pudo obtener el token");
+        setError("No se pudo obtener el token de Spotify");
       }
     } catch (err) {
       setError("Error de conexión con la API");
@@ -73,9 +77,16 @@ function Login() {
             animation: fadein 0.7s;
           }
           .login-title {
+            color: #1db954;
+            font-weight: 900;
+            font-size: 2.2em;
+            margin-bottom: 0.4em;
+            letter-spacing: 0.01em;
+          }
+          .login-subtitle {
             color: #fff;
             font-weight: 800;
-            font-size: 2em;
+            font-size: 1.5em;
             margin-bottom: 0.7em;
             letter-spacing: 0.01em;
           }
@@ -134,7 +145,8 @@ function Login() {
         `}
       </style>
       <form className="login-card" onSubmit={handleLogin}>
-        <div className="login-title">Iniciar Sesión</div>
+        <div className="login-title">Spotify API</div>
+        <div className="login-subtitle">Iniciar Sesión</div>
         <label className="login-label" htmlFor="user">Usuario</label>
         <input
           className="login-input"

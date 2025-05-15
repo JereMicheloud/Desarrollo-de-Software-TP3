@@ -45,7 +45,7 @@ function Home() {
         background: '#191414',
         borderRadius: '16px 0 0 16px',
         display: 'flex',
-        flexDirection: 'column',
+        flzexDirection: 'column',
         alignItems: 'center'
       }}>
         <style>
