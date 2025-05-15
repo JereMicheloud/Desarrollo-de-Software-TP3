@@ -32,10 +32,10 @@ function Login() {
       const data = await response.json();
 
       if (data.access_token) {
-        // ✅ Guardamos credenciales y token en localStorage
+        // ✅ Guardar datos en localStorage con los nombres correctos
         localStorage.setItem("spotify_token", data.access_token);
-        localStorage.setItem("spotify_client_id", clientId);
-        localStorage.setItem("spotify_client_secret", clientSecret);
+        localStorage.setItem("CLIENT_ID", clientId);
+        localStorage.setItem("CLIENT_SECRET", clientSecret);
 
         navigate("/home");
       } else {
