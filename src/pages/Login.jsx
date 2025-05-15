@@ -9,6 +9,12 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
+
+    if (!clientId || !clientSecret) {
+      setError("Debes ingresar Client ID y Client Secret.");
+      return;
+    }
 
     const tokenUrl = "https://accounts.spotify.com/api/token";
     const credentials = btoa(`${clientId}:${clientSecret}`);
@@ -26,17 +32,18 @@ function Login() {
       const data = await response.json();
 
       if (data.access_token) {
-        // ✅ Guardamos todo en localStorage
+        // ✅ Guardamos credenciales y token en localStorage
         localStorage.setItem("spotify_token", data.access_token);
         localStorage.setItem("spotify_client_id", clientId);
         localStorage.setItem("spotify_client_secret", clientSecret);
 
         navigate("/home");
       } else {
-        setError("No se pudo obtener el token. Verifica las credenciales.");
+        setError("Credenciales incorrectas o fallo al obtener el token.");
       }
     } catch (err) {
-      setError("Error de conexión con la API");
+      console.error("Error al conectarse con la API:", err);
+      setError("Error de conexión con la API de Spotify.");
     }
   };
 
@@ -118,6 +125,7 @@ function Login() {
             margin-top: 1em;
             font-weight: 600;
             letter-spacing: 0.01em;
+            text-align: center;
           }
           @keyframes fadein {
             from { opacity: 0; transform: translateY(30px);}
@@ -125,6 +133,7 @@ function Login() {
           }
         `}
       </style>
+
       <form className="login-card" onSubmit={handleLogin}>
         <div className="login-title">Spotify Login</div>
 
@@ -148,7 +157,8 @@ function Login() {
           autoComplete="off"
         />
 
-        <button className="login-btn" type="submit">Obtener Token</button>
+        <button className="login-btn" type="submit">Iniciar sesión</button>
+
         {error && <div className="login-error">{error}</div>}
       </form>
     </div>
