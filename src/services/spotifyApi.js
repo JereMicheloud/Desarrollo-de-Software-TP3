@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const API_URL = 'https://api.spotify.com/v1';
+const TOKEN_URL = 'https://accounts.spotify.com/api/token';
 const clientId = localStorage.getItem("CLIENT_ID");
 const clientSecret = localStorage.getItem("CLIENT_SECRET");
 
