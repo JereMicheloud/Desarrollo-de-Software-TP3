@@ -1,6 +1,6 @@
 Link Página
 
-https://desarrollo-de-software-tp-3-b26ilzg4j.vercel.app/
+https://desarrollo-de-software-tp-3-delta.vercel.app/
 
 Para poder ingresar y que la API funcione, se deben utilizar el CLIENT_ID y CLIENT_SECRET dados por Spotify.
 
